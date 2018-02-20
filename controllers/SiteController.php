@@ -11,10 +11,12 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
 use app\models\AddForm;
+use yii\data\Pagination;
+use app\models\Country;
 //namespace app\controllers;
 
 //use yii\web\Controller;
-class SiteController extends Controller
+class CountryController extends Controller
 {
 
     /**
@@ -148,7 +150,7 @@ class SiteController extends Controller
         $c=$str1.$str2;
         return $this->render('Ss',['ssss'=>$c]);
     }
-    public function actionEntry()
+   public function actionEntry()
     {
         $model = new EntryForm;
 
@@ -157,7 +159,7 @@ class SiteController extends Controller
 
             // 做些有意义的事 ...
 
-            return $this->render('entry-confirm', ['r' => $model]);
+            return $this->render('entry-confirm', ['model' => $model]);
         } else {
             // 无论是初始化显示还是数据验证错误
             return $this->render('entry', ['model' => $model]);
@@ -166,7 +168,7 @@ class SiteController extends Controller
     public function actionAdd() // num1 num2不需要靠url来传入，这里不需要传值。不然报错了
     {
     
-        $model =new AddForm;
+        $model =new AddForm; 
       //  var_dump(Yii::$app->request->post());
         if ($model->load(Yii::$app->request->post()) && $model->validate())
         {   
@@ -180,6 +182,25 @@ class SiteController extends Controller
         {
             return $this->render('add', ['model' => $model]);
         }
+    }
+     public function actionIndex()
+    {
+        $query = Country::find();
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        $countries = $query->orderBy('name')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('index', [
+            'countries' => $countries,
+            'pagination' => $pagination,
+        ]);
     }
 }
 ?>

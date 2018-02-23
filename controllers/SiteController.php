@@ -12,11 +12,10 @@ use app\models\ContactForm;
 use app\models\EntryForm;
 use app\models\AddForm;
 use yii\data\Pagination;
-use app\models\Country;
 //namespace app\controllers;
 
 //use yii\web\Controller;
-class CountryController extends Controller
+class SiteController extends Controller
 {
 
     /**
@@ -155,9 +154,7 @@ class CountryController extends Controller
         $model = new EntryForm;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            // 验证 $model 收到的数据
 
-            // 做些有意义的事 ...
 
             return $this->render('entry-confirm', ['model' => $model]);
         } else {
@@ -172,10 +169,8 @@ class CountryController extends Controller
       //  var_dump(Yii::$app->request->post());
         if ($model->load(Yii::$app->request->post()) && $model->validate())
         {   
-
-            $num1=$model->num1;
-            $num2=$model->num2;          
-            $res =$num1+$num2;
+                funcitonInsert();
+      
             return $this->render('add-confirm', ['model' => $res]);
         } 
         else 
